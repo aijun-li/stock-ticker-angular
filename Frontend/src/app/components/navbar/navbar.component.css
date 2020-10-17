@@ -1,0 +1,24 @@
+nav {
+  background-color: #6a50f2;
+}
+
+.navbar-brand {
+  border: transparent solid 2px;
+}
+
+.navbar-toggler:focus {
+  outline: 1px solid orange;
+}
+
+.navbar-nav li a {
+  width: fit-content;
+}
+
+.navbar-nav li.selected {
+  border-radius: 16px;
+  border: white solid 2px;
+}
+
+.navbar-nav li.selected a {
+  color: white;
+}
