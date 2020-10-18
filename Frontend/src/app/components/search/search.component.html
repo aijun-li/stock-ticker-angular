@@ -1,7 +1,14 @@
 <h1 class="text-center">STOCK SEARCH</h1>
 <form>
   <div class="form-group px-3 text-center d-flex justify-content-between">
-    <input type="text" placeholder="Enter stock name" class="p-0" />
+    <input
+      type="text"
+      placeholder="Enter stock name"
+      class="p-0"
+      [matAutocomplete]="auto"
+      name="searchInput"
+      (keyup)="search($event.target.value)"
+    />
     <button class="btn btn-link">
       <svg
         width="1em"
@@ -22,4 +29,9 @@
       </svg>
     </button>
   </div>
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let sug of sugs$ | async" [value]="sug.ticker">
+      {{ sug.ticker + ' | ' + sug.name }}
+    </mat-option>
+  </mat-autocomplete>
 </form>
