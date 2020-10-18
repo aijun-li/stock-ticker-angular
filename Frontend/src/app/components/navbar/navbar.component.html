@@ -1,7 +1,6 @@
-<nav class="navbar navbar-expand-md navbar-dark sticky-top">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top">
   <a class="navbar-brand text-white" routerLink="/">Stock Search</a>
 
-  <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
   <button
     class="navbar-toggler"
     type="button"
@@ -10,7 +9,6 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <!-- Step 2: Add the ngbCollapse directive to the element below. -->
   <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
     <ul class="navbar-nav ml-auto">
       <li
