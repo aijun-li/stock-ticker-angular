@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 const fetch = require('node-fetch')
+const cors = require('cors')
+
+app.use(cors())
 
 const TIINGO_TOKEN = 'ded10bb46330604d17568c0c6bc1319a67c1e400'
 const TIINGO_BASE = 'https://api.tiingo.com'
@@ -23,6 +26,6 @@ app.get('/api/suggestions/:ticker', async (req, res) => {
   res.send(suggestions)
 })
 
-app.listen(3000, () => {
+app.listen(3000, '192.168.50.200', () => {
   console.log('Start listening!')
 })
