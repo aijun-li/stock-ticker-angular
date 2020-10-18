@@ -1,0 +1,13 @@
+footer {
+  background-color: #dddddd;
+}
+
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1;
+}
