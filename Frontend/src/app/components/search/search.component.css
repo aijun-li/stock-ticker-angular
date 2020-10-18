@@ -1,0 +1,32 @@
+h1 {
+  font-size: 4rem;
+  margin-top: 8rem;
+  font-weight: bolder;
+}
+
+form {
+  margin-top: 4rem;
+}
+
+.form-group {
+  width: 16rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 9% / 50%;
+  border: 3px solid #6a50f2;
+}
+
+.form-group input {
+  width: 10rem;
+  border: none;
+  background-color: transparent;
+  flex: 1;
+}
+
+.form-group input:focus {
+  outline: none;
+}
+
+.form-group button {
+  color: #6a50f2;
+}
