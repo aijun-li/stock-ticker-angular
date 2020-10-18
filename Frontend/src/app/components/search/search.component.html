@@ -30,8 +30,14 @@
     </button>
   </div>
   <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let sug of sugs$ | async" [value]="sug.ticker">
-      {{ sug.ticker + ' | ' + sug.name }}
+    <mat-option *ngIf="isLoading">
+      <mat-spinner diameter="30"></mat-spinner>
     </mat-option>
+
+    <ng-container *ngIf="!isLoading">
+      <mat-option *ngFor="let sug of sugs" [value]="sug.ticker">
+        {{ sug.ticker + ' | ' + sug.name }}
+      </mat-option>
+    </ng-container>
   </mat-autocomplete>
 </form>
