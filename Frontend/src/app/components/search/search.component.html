@@ -1,5 +1,5 @@
 <h1 class="text-center">STOCK SEARCH</h1>
-<form>
+<form (submit)="showDetails($event)">
   <div class="form-group px-3 text-center d-flex justify-content-between">
     <input
       type="text"
@@ -8,6 +8,7 @@
       [matAutocomplete]="auto"
       name="searchInput"
       (keyup)="search($event.target.value)"
+      [(ngModel)]="ticker"
     />
     <button class="btn btn-link">
       <svg

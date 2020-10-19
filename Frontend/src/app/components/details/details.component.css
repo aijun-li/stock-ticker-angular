@@ -1,0 +1,13 @@
+.color-up {
+  color: #437d22;
+}
+
+.color-down {
+  color: #df3522;
+}
+
+.star-icon {
+  position: relative;
+  top: -0.4rem;
+  cursor: pointer;
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 import { Observable, of, Subject } from 'rxjs'
 import {
   debounceTime,
@@ -19,8 +20,9 @@ export class SearchComponent implements OnInit {
   private searchText$ = new Subject<string>()
   isLoading = false
   sugs: Suggestion[]
+  ticker: string
 
-  constructor(private request: RequestService) {}
+  constructor(private request: RequestService, private router: Router) {}
 
   ngOnInit(): void {
     this.sugs$ = this.searchText$.pipe(
@@ -41,5 +43,12 @@ export class SearchComponent implements OnInit {
 
   search(keyword: string) {
     this.searchText$.next(keyword)
+  }
+
+  showDetails(event: Event): void {
+    event.preventDefault()
+    if (this.ticker) {
+      this.router.navigate(['details', this.ticker])
+    }
   }
 }
