@@ -37,9 +37,23 @@ app.get('/api/details/meta/:ticker', async (req, res) => {
 
 // Route for retrieving latest prices
 app.get('/api/details/latest/:ticker', async (req, res) => {
-  let latesetRes = await fetch(`${TIINGO_BASE}/iex/${req.params.ticker}?token=${TIINGO_TOKEN}`)
-  let latestInfo = await latesetRes.json()
+  let latestRes = await fetch(`${TIINGO_BASE}/iex/${req.params.ticker}?token=${TIINGO_TOKEN}`)
+  let latestInfo = await latestRes.json()
   res.send(latestInfo)
+})
+
+// Route for retrieving historical prices
+app.get('/api/details/prices/:ticker/:startDate', async (req, res) => {
+  let pricesRes = await fetch(
+    `${TIINGO_BASE}/iex/${req.params.ticker}/prices?startDate=${req.params.startDate}&resampleFreq=4min&token=${TIINGO_TOKEN}`
+  )
+  let pricesInfo = await pricesRes.json()
+  res.send(
+    pricesInfo.map(price => ({
+      date: price.date,
+      close: price.close
+    }))
+  )
 })
 
 app.listen(3000, '192.168.50.200', () => {
