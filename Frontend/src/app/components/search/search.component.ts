@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.sugs$ = this.searchText$.pipe(
-      debounceTime(300),
+      debounceTime(500),
       distinctUntilChanged(),
       tap(() => {
         this.isLoading = true // Load indicator before sending request
