@@ -26,6 +26,22 @@ app.get('/api/suggestions/:ticker', async (req, res) => {
   res.send(suggestions)
 })
 
+// Route for retrieving meta info
+app.get('/api/details/meta/:ticker', async (req, res) => {
+  let metaRes = await fetch(
+    `${TIINGO_BASE}/tiingo/daily/${req.params.ticker}?token=${TIINGO_TOKEN}`
+  )
+  let metaInfo = await metaRes.json()
+  res.send(metaInfo)
+})
+
+// Route for retrieving latest prices
+app.get('/api/details/latest/:ticker', async (req, res) => {
+  let latesetRes = await fetch(`${TIINGO_BASE}/iex/${req.params.ticker}?token=${TIINGO_TOKEN}`)
+  let latestInfo = await latesetRes.json()
+  res.send(latestInfo)
+})
+
 app.listen(3000, '192.168.50.200', () => {
   console.log('Start listening!')
 })
