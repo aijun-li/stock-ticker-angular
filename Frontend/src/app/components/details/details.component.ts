@@ -44,7 +44,13 @@ export class DetailsComponent implements OnInit {
       this.time = new Date()
       this.dataTime = new Date(latest[0].timestamp)
 
-      if (Math.abs(this.time.getTime() - this.dataTime.getTime()) < 60000) {
+      if (
+        Math.abs(this.time.getTime() - this.dataTime.getTime()) < 60000 ||
+        (latest[0].askPrice != null &&
+          latest[0].askSize != null &&
+          latest[0].bidPrice != null &&
+          latest[0].bidSize != null)
+      ) {
         this.info.isOpen = true
       } else {
         this.info.isOpen = false
