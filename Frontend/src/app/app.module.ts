@@ -14,7 +14,8 @@ import { DetailsComponent } from './components/details/details.component'
 import { NavbarComponent } from './components/navbar/navbar.component'
 import { PortfolioComponent } from './components/portfolio/portfolio.component'
 import { SearchComponent } from './components/search/search.component'
-import { WatchlistComponent } from './components/watchlist/watchlist.component'
+import { WatchlistComponent } from './components/watchlist/watchlist.component';
+import { SummaryTabComponent } from './components/summary-tab/summary-tab.component'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { WatchlistComponent } from './components/watchlist/watchlist.component'
     SearchComponent,
     WatchlistComponent,
     PortfolioComponent,
-    DetailsComponent
+    DetailsComponent,
+    SummaryTabComponent
   ],
   imports: [
     BrowserModule,

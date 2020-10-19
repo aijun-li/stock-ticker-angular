@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { LatestInfo } from 'src/app/interfaces/latest'
-import { MetaInfo } from 'src/app/interfaces/meta'
+import { Info } from 'src/app/interfaces/info'
 import { RequestService } from 'src/app/services/request.service'
 
 @Component({
@@ -10,19 +9,17 @@ import { RequestService } from 'src/app/services/request.service'
   styleUrls: ['./details.component.css']
 })
 export class DetailsComponent implements OnInit {
-  ticker: string
-  meta: MetaInfo
-  latest: LatestInfo
+  info: Info = {}
+  prices: [number, number][]
   time: Date
   dataTime: Date
   updateCounter: number
   isStored: boolean = true
-  isOpen: boolean = false
 
   constructor(private route: ActivatedRoute, private request: RequestService) {}
 
   ngOnInit(): void {
-    this.ticker = this.route.snapshot.paramMap.get('ticker')
+    this.info.ticker = this.route.snapshot.paramMap.get('ticker')
     this.getMeta()
     this.getLatest()
 
@@ -31,24 +28,37 @@ export class DetailsComponent implements OnInit {
   }
 
   getMeta() {
-    this.request.getMeta(this.ticker).subscribe((meta) => (this.meta = meta))
+    this.request
+      .getMeta(this.info.ticker)
+      .subscribe((meta) => (this.info.meta = meta))
   }
 
   getLatest() {
-    this.request.getLatest(this.ticker).subscribe((latest) => {
+    // Fetch latest info
+    this.request.getLatest(this.info.ticker).subscribe((latest) => {
       let change = latest[0].last - latest[0].prevClose
       let changeP = (change * 100) / latest[0].prevClose
-      this.latest = latest[0]
-      this.latest.change = change.toFixed(2)
-      this.latest.changeP = changeP.toFixed(2)
+      this.info.latest = latest[0]
+      this.info.latest.change = change.toFixed(2)
+      this.info.latest.changeP = changeP.toFixed(2)
       this.time = new Date()
       this.dataTime = new Date(latest[0].timestamp)
 
       if (Math.abs(this.time.getTime() - this.dataTime.getTime()) < 60000) {
-        this.isOpen = true
+        this.info.isOpen = true
       } else {
-        this.isOpen = false
+        this.info.isOpen = false
       }
+
+      // Fetch the day prices
+      this.request
+        .getPrices(this.info.ticker, this.dataTime)
+        .subscribe((prices) => {
+          this.prices = prices.map((price) => [
+            new Date(price.date).getTime(),
+            price.close
+          ])
+        })
     })
   }
 }

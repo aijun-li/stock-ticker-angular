@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-12 col-md-6">
+      <div class="row" style="font-size: 0.8rem">
+        <div class="col-6 d-flex justify-content-center">
+          <table>
+            <tbody>
+              <tr>
+                <td>High Price:</td>
+                <td>{{ info.latest.high }}</td>
+              </tr>
+              <tr>
+                <td>Low Price:</td>
+                <td>{{ info.latest.low }}</td>
+              </tr>
+              <tr>
+                <td>Open Price:</td>
+                <td>{{ info.latest.open }}</td>
+              </tr>
+              <tr>
+                <td>Prev. Price:</td>
+                <td>{{ info.latest.prevClose }}</td>
+              </tr>
+              <tr>
+                <td>Volume:</td>
+                <td>{{ info.latest.volume }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="info.isOpen" class="col-6 d-flex justify-content-center">
+          <table>
+            <tbody>
+              <tr>
+                <td>Mid Price:</td>
+                <td>{{ info.latest.mid ? info.latest.mid : '-' }}</td>
+              </tr>
+              <tr>
+                <td>Ask Price:</td>
+                <td>{{ info.latest.askPrice }}</td>
+              </tr>
+              <tr>
+                <td>Ask Size:</td>
+                <td>{{ info.latest.askSize }}</td>
+              </tr>
+              <tr>
+                <td>Bid Price:</td>
+                <td>{{ info.latest.bidPrice }}</td>
+              </tr>
+              <tr>
+                <td>Bid Size:</td>
+                <td>{{ info.latest.bidSize }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col" style="font-size: 0.9rem">
+          <p class="text-center font-weight-bold" style="font-size: 1.2rem">
+            Company's Description
+          </p>
+          <p>Start Date: {{ info.meta.startDate | date: 'yyyy-MM-dd' }}</p>
+          <p>{{ info.meta.description }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <highcharts-chart
+        [Highcharts]="Highcharts"
+        constructorType="stockChart"
+        [options]="chartOptions"
+        style="width: 100%; height: auto; display: block"
+        [(update)]="shouldUpdate"
+      ></highcharts-chart>
+    </div>
+  </div>
+</div>

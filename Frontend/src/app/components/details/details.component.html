@@ -1,15 +1,15 @@
 <div
   class="container d-flex justify-content-center"
   style="padding-top: 5rem"
-  *ngIf="!meta || !latest"
+  *ngIf="!info.meta || !info.latest || !prices"
 >
   <mat-spinner></mat-spinner>
 </div>
 
-<div class="pt-4 container" *ngIf="meta && latest">
+<div class="pt-4 container" *ngIf="info.meta && info.latest && prices">
   <div class="row" style="font-size: 2.3rem">
     <div class="col-auto">
-      {{ ticker | uppercase }}
+      {{ info.ticker | uppercase }}
       <span class="star-icon" (click)="isStored = !isStored">
         <svg
           *ngIf="!isStored"
@@ -42,21 +42,21 @@
     </div>
     <div
       class="col text-right"
-      [class.color-up]="latest.change > 0"
-      [class.color-down]="latest.change < 0"
+      [class.color-up]="info.latest.change > 0"
+      [class.color-down]="info.latest.change < 0"
     >
-      {{ latest.last }}
+      {{ info.latest.last }}
     </div>
   </div>
   <div class="row align-items-start" style="font-size: 1.5rem">
-    <div class="col text-secondary">{{ meta.name }}</div>
+    <div class="col text-secondary">{{ info.meta.name }}</div>
     <div
       class="col text-right row"
-      [class.color-up]="latest.change > 0"
-      [class.color-down]="latest.change < 0"
+      [class.color-up]="info.latest.change > 0"
+      [class.color-down]="info.latest.change < 0"
     >
       <div class="col-12 col-md pr-md-2 text-right">
-        <span *ngIf="latest.change > 0">
+        <span *ngIf="info.latest.change > 0">
           <svg
             width="1em"
             height="1em"
@@ -70,7 +70,7 @@
             />
           </svg>
         </span>
-        <span *ngIf="latest.change < 0">
+        <span *ngIf="info.latest.change < 0">
           <svg
             width="1em"
             height="1em"
@@ -84,15 +84,15 @@
             />
           </svg>
         </span>
-        {{ latest.change }}
+        {{ info.latest.change }}
       </div>
       <div class="col-12 col-md-auto pl-0 text-right">
-        {{ '(' + latest.changeP + '%)' }}
+        {{ '(' + info.latest.changeP + '%)' }}
       </div>
     </div>
   </div>
   <div class="row text-secondary mt-2" style="font-size: 0.9rem">
-    <div class="col-auto">{{ meta.exchangeCode }}</div>
+    <div class="col-auto">{{ info.meta.exchangeCode }}</div>
     <div class="col text-right">{{ time | date: 'yyyy-MM-dd HH:mm:ss' }}</div>
   </div>
   <div class="row mt-2">
@@ -105,10 +105,10 @@
   </div>
   <div class="row mt-4">
     <div class="col text-center">
-      <span *ngIf="!isOpen" style="background-color: #f0d8d9">
+      <span *ngIf="!info.isOpen" style="background-color: #f0d8d9">
         Market Closed on {{ dataTime | date: 'yyyy-MM-dd HH:mm:ss' }}
       </span>
-      <span *ngIf="isOpen" style="background-color: #dbecdb">
+      <span *ngIf="info.isOpen" style="background-color: #dbecdb">
         Market is Open
       </span>
     </div>
@@ -117,7 +117,9 @@
   <div class="row mt-5">
     <div class="col">
       <mat-tab-group mat-stretch-tabs mat-align-tabs="center">
-        <mat-tab label="Summary"> Content 1 </mat-tab>
+        <mat-tab label="Summary">
+          <app-summary-tab [info]="info" [prices]="prices"></app-summary-tab>
+        </mat-tab>
         <mat-tab label="Top News"> Content 2 </mat-tab>
         <mat-tab label="Charts"> Content 3 </mat-tab>
       </mat-tab-group>
