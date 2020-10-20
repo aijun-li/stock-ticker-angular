@@ -124,7 +124,11 @@
 
   <div class="row mt-5">
     <div class="col">
-      <mat-tab-group mat-stretch-tabs mat-align-tabs="center">
+      <mat-tab-group
+        mat-stretch-tabs
+        mat-align-tabs="center"
+        animationDuration="0ms"
+      >
         <mat-tab label="Summary">
           <app-summary-tab [info]="info" [prices]="prices"></app-summary-tab>
         </mat-tab>
