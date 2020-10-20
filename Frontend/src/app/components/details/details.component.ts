@@ -19,7 +19,7 @@ export class DetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private request: RequestService) {}
 
   ngOnInit(): void {
-    this.info.ticker = this.route.snapshot.paramMap.get('ticker')
+    this.info.ticker = this.route.snapshot.paramMap.get('ticker').toUpperCase()
     this.getMeta()
     this.getLatest()
 
