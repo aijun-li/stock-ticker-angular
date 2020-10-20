@@ -57,7 +57,6 @@ export class SummaryTabComponent implements OnInit, OnChanges {
         }
       ]
       this.shouldUpdate = true
-      console.log(this.shouldUpdate)
     }
   }
 }
