@@ -14,7 +14,9 @@ export class DetailsComponent implements OnInit {
   time: Date
   dataTime: Date
   updateCounter: number
-  isStored: boolean = true
+  isStored: boolean
+  counter: number = 0
+  toStore: number = 0
 
   constructor(private route: ActivatedRoute, private request: RequestService) {}
 
@@ -22,9 +24,32 @@ export class DetailsComponent implements OnInit {
     this.info.ticker = this.route.snapshot.paramMap.get('ticker').toUpperCase()
     this.getMeta()
     this.getLatest()
+    this.isStored = (JSON.parse(
+      window.localStorage.getItem('collections')
+    ) as string[]).includes(this.info.ticker)
 
     // Set auto updating
     this.updateCounter = window.setInterval(() => this.getLatest(), 15000)
+  }
+
+  toggleStore(): void {
+    let collections: string[] = JSON.parse(
+      window.localStorage.getItem('collections')
+    )
+    if (this.isStored) {
+      let index = collections.indexOf(this.info.ticker)
+      collections.splice(index, 1)
+      this.toStore = -1
+      window.clearTimeout(this.counter)
+      this.counter = window.setTimeout(() => (this.toStore = 0), 5000)
+    } else {
+      collections.push(this.info.ticker)
+      this.toStore = 1
+      window.clearTimeout(this.counter)
+      this.counter = window.setTimeout(() => (this.toStore = 0), 5000)
+    }
+    window.localStorage.setItem('collections', JSON.stringify(collections))
+    this.isStored = !this.isStored
   }
 
   getMeta() {
