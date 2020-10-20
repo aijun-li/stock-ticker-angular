@@ -56,6 +56,33 @@ app.get('/api/details/prices/:ticker/:startDate', async (req, res) => {
   )
 })
 
+// Route for retrieving top news
+app.get('/api/news/:ticker', async (req, res) => {
+  let newsRes = await fetch(`${NEWS_BASE}/everything?q=${req.params.ticker}&apiKey=${NEWS_TOKEN}`)
+  let newsInfo = await newsRes.json()
+  res.send(
+    newsInfo.articles
+      .filter(
+        item =>
+          item.url &&
+          item.title &&
+          item.description &&
+          item.source &&
+          item.urlToImage &&
+          item.publishedAt
+      )
+      .slice(0, 20)
+      .map(item => ({
+        url: item.url,
+        title: item.title,
+        desc: item.description,
+        source: item.source.name,
+        img: item.urlToImage,
+        date: item.publishedAt
+      }))
+  )
+})
+
 app.listen(3000, '192.168.50.200', () => {
   console.log('Start listening!')
 })
