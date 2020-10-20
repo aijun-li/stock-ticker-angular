@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { LatestInfo } from '../interfaces/latest'
 import { MetaInfo } from '../interfaces/meta'
+import { News } from '../interfaces/news'
 import { Price } from '../interfaces/price'
 import { Suggestion } from '../interfaces/suggestion'
 
@@ -38,5 +39,10 @@ export class RequestService {
     return this.http.get<Price[]>(
       `${this.baseURL}/details/prices/${ticker}/${year}-${month}-${day}`
     )
+  }
+
+  // Fetch top news for a ticker
+  getNews(ticker: string): Observable<News[]> {
+    return this.http.get<News[]>(`${this.baseURL}/news/${ticker}`)
   }
 }

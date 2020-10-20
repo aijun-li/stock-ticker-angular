@@ -1,0 +1,80 @@
+<div class="container pt-3 pt-md-0">
+  <div *ngFor="let pair of news" class="row my-md-4">
+    <div *ngFor="let item of pair" class="col-12 col-md-6 m-md-0 my-3">
+      <div
+        class="card p-3"
+        style="background-color: #fafafa; cursor: pointer; height: 100%"
+        (click)="open(item, content)"
+      >
+        <div class="row" style="height: 100%">
+          <div class="col-12 col-md-3 d-flex align-items-center pr-md-0">
+            <div>
+              <img [src]="item.img" class="card-img news-image" />
+            </div>
+          </div>
+          <div class="col-12 col-md-9 d-flex align-items-center">
+            <p>
+              {{ item.title }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <div class="modal-title">
+      <p class="m-0 font-weight-bold" style="font-size: 1.6rem">
+        {{ selectedNews.source }}
+      </p>
+      <p class="text-secondary m-0">
+        {{ selectedNews.date | date: 'MMMM dd, yyyy' }}
+      </p>
+    </div>
+    <button
+      type="button"
+      class="close text-secondary"
+      (click)="modal.dismiss()"
+      style="outline: none"
+    >
+      <span>&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="m-0 font-weight-bold" style="font-size: 1.1rem">
+      {{ selectedNews.title }}
+    </p>
+    <p class="m-0" style="font-size: 0.9rem">{{ selectedNews.desc }}</p>
+    <p class="text-secondary m-0" style="font-size: 0.8rem">
+      For more details click
+      <a [href]="selectedNews.url" target="_blank">here</a>
+    </p>
+    <div class="card mt-5 px-4 pt-4 pb-2">
+      <p>Share</p>
+      <div style="font-size: 2.5rem">
+        <a
+          [href]="
+            'https://twitter.com/intent/tweet?text=' +
+            selectedNews.title +
+            ' ' +
+            selectedNews.url
+          "
+          target="_blank"
+        >
+          <fa-icon [icon]="twIcon"></fa-icon>
+        </a>
+        <a
+          [href]="
+            'https://www.facebook.com/sharer/sharer.php?u=' + selectedNews.url
+          "
+          target="_blank"
+          class="ml-2"
+        >
+          <fa-icon [icon]="fbIcon"></fa-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+</ng-template>
