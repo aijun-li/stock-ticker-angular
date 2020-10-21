@@ -5,4 +5,5 @@ export interface MetaInfo {
   startDate: string
   name: string
   ticker: string
+  detail?: string
 }

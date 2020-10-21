@@ -1,17 +1,22 @@
 <div
   class="container d-flex justify-content-center"
   style="padding-top: 5rem"
-  *ngIf="
-    !info.meta || !info.latest || !info.latestPrices || !info.twoYearPrices
-  "
+  *ngIf="isLoading"
 >
   <mat-spinner></mat-spinner>
 </div>
 
 <div
-  class="pt-4 container"
-  *ngIf="info.meta && info.latest && info.latestPrices && info.twoYearPrices"
+  *ngIf="!isLoading && !info.meta"
+  class="container"
+  style="padding-top: 4rem"
 >
+  <ngb-alert type="danger" class="text-center text-dark" [dismissible]="false">
+    No results found. Please enter valid Ticker
+  </ngb-alert>
+</div>
+
+<div class="pt-4 container" *ngIf="!isLoading && info.meta">
   <ngb-alert *ngIf="toStore" [type]="toStore > 0 ? 'success' : 'danger'">
     {{
       info.ticker + ' ' + (toStore > 0 ? 'added to ' : 'removed from ')
