@@ -45,7 +45,7 @@ app.get('/api/details/latest/:ticker', async (req, res) => {
 // Route for retrieving historical prices
 app.get('/api/details/prices/:ticker/:startDate/:freq', async (req, res) => {
   let pricesRes = await fetch(
-    `${TIINGO_BASE}/iex/${req.params.ticker}/prices?startDate=${req.params.startDate}&resampleFreq=${req.params.freq}&token=${TIINGO_TOKEN}`
+    `${TIINGO_BASE}/iex/${req.params.ticker}/prices?startDate=${req.params.startDate}&resampleFreq=${req.params.freq}&token=${TIINGO_TOKEN}&columns=open,high,low,close,volume`
   )
   let pricesInfo = await pricesRes.json()
   res.send(pricesInfo)
