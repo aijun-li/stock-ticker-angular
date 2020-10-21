@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core'
 import { faFacebookSquare, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { News } from 'src/app/interfaces/news'
-import { RequestService } from 'src/app/services/request.service'
 
 @Component({
   selector: 'app-news-tab',
@@ -16,10 +15,7 @@ export class NewsTabComponent implements OnInit {
   twIcon = faTwitter
   fbIcon = faFacebookSquare
 
-  constructor(
-    private request: RequestService,
-    private modalService: NgbModal
-  ) {}
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.processedNews = new Array(Math.ceil(this.news.length / 2))
