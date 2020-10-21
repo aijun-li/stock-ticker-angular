@@ -48,12 +48,7 @@ app.get('/api/details/prices/:ticker/:startDate', async (req, res) => {
     `${TIINGO_BASE}/iex/${req.params.ticker}/prices?startDate=${req.params.startDate}&resampleFreq=4min&token=${TIINGO_TOKEN}`
   )
   let pricesInfo = await pricesRes.json()
-  res.send(
-    pricesInfo.map(price => ({
-      date: price.date,
-      close: price.close
-    }))
-  )
+  res.send(pricesInfo)
 })
 
 // Route for retrieving top news
