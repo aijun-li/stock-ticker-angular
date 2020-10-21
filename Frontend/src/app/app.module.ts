@@ -17,7 +17,8 @@ import { SearchComponent } from './components/search/search.component'
 import { WatchlistComponent } from './components/watchlist/watchlist.component';
 import { SummaryTabComponent } from './components/summary-tab/summary-tab.component';
 import { NewsTabComponent } from './components/news-tab/news-tab.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ChartsTabComponent } from './components/charts-tab/charts-tab.component'
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
     PortfolioComponent,
     DetailsComponent,
     SummaryTabComponent,
-    NewsTabComponent
+    NewsTabComponent,
+    ChartsTabComponent
   ],
   imports: [
     BrowserModule,

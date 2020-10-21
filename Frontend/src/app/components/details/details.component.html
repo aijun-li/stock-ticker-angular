@@ -1,12 +1,15 @@
 <div
   class="container d-flex justify-content-center"
   style="padding-top: 5rem"
-  *ngIf="!info.meta || !info.latest || !prices"
+  *ngIf="!info.meta || !info.latest || !prices || !twoYearPrices"
 >
   <mat-spinner></mat-spinner>
 </div>
 
-<div class="pt-4 container" *ngIf="info.meta && info.latest && prices">
+<div
+  class="pt-4 container"
+  *ngIf="info.meta && info.latest && prices && twoYearPrices"
+>
   <ngb-alert *ngIf="toStore" [type]="toStore > 0 ? 'success' : 'danger'">
     {{
       info.ticker + ' ' + (toStore > 0 ? 'added to ' : 'removed from ')
@@ -135,7 +138,12 @@
         <mat-tab label="Top News">
           <app-news-tab [ticker]="info.ticker"></app-news-tab>
         </mat-tab>
-        <mat-tab label="Charts"> Content 3 </mat-tab>
+        <mat-tab label="Charts">
+          <app-charts-tab
+            [ticker]="info.ticker"
+            [prices]="twoYearPrices"
+          ></app-charts-tab>
+        </mat-tab>
       </mat-tab-group>
     </div>
   </div>

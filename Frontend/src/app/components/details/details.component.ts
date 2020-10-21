@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
+import {} from 'rxjs'
 import { Info } from 'src/app/interfaces/info'
+import { Price } from 'src/app/interfaces/price'
 import { RequestService } from 'src/app/services/request.service'
 
 @Component({
@@ -11,6 +13,7 @@ import { RequestService } from 'src/app/services/request.service'
 export class DetailsComponent implements OnInit {
   info: Info = {}
   prices: [number, number][]
+  twoYearPrices: Price[]
   time: Date
   dataTime: Date
   updateCounter: number
@@ -24,6 +27,7 @@ export class DetailsComponent implements OnInit {
     this.info.ticker = this.route.snapshot.paramMap.get('ticker').toUpperCase()
     this.getMeta()
     this.getLatest()
+    this.getTwoYearPrice()
     this.isStored = (JSON.parse(
       window.localStorage.getItem('collections')
     ) as string[]).includes(this.info.ticker)
@@ -56,6 +60,19 @@ export class DetailsComponent implements OnInit {
     this.request
       .getMeta(this.info.ticker)
       .subscribe((meta) => (this.info.meta = meta))
+  }
+
+  getTwoYearPrice() {
+    let today = new Date()
+    this.request
+      .getPrices(
+        this.info.ticker,
+        new Date(today.getFullYear() - 2, today.getMonth(), today.getDate()),
+        '12hour'
+      )
+      .subscribe((prices) => {
+        this.twoYearPrices = prices
+      })
   }
 
   getLatest() {
