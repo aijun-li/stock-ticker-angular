@@ -4,4 +4,5 @@ export interface Price {
   high: number
   low: number
   open: number
+  volume: number
 }
