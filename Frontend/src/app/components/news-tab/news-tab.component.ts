@@ -10,8 +10,8 @@ import { RequestService } from 'src/app/services/request.service'
   styleUrls: ['./news-tab.component.css']
 })
 export class NewsTabComponent implements OnInit {
-  @Input() ticker: string
-  news: News[][]
+  @Input() news: News[]
+  processedNews: News[][]
   selectedNews: News
   twIcon = faTwitter
   fbIcon = faFacebookSquare
@@ -22,12 +22,12 @@ export class NewsTabComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.request.getNews(this.ticker).subscribe((news) => {
-      this.news = new Array(Math.ceil(news.length / 2)).fill(1).map(() => [])
-      for (let i = 0; i < news.length; i++) {
-        this.news[Math.trunc(i / 2)].push(news[i])
-      }
-    })
+    this.processedNews = new Array(Math.ceil(this.news.length / 2))
+      .fill(1)
+      .map(() => [])
+    for (let i = 0; i < this.news.length; i++) {
+      this.processedNews[Math.trunc(i / 2)].push(this.news[i])
+    }
   }
 
   open(item: News, content) {

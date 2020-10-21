@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import {} from 'rxjs'
 import { Info } from 'src/app/interfaces/info'
+import { News } from 'src/app/interfaces/news'
 import { Price } from 'src/app/interfaces/price'
 import { RequestService } from 'src/app/services/request.service'
 
@@ -14,6 +15,7 @@ export class DetailsComponent implements OnInit {
   info: Info = {}
   prices: [number, number][]
   twoYearPrices: Price[]
+  news: News[]
   time: Date
   dataTime: Date
   updateCounter: number
@@ -28,6 +30,7 @@ export class DetailsComponent implements OnInit {
     this.getMeta()
     this.getLatest()
     this.getTwoYearPrice()
+    this.getNews()
     this.isStored = (JSON.parse(
       window.localStorage.getItem('collections')
     ) as string[]).includes(this.info.ticker)
@@ -60,6 +63,12 @@ export class DetailsComponent implements OnInit {
     this.request
       .getMeta(this.info.ticker)
       .subscribe((meta) => (this.info.meta = meta))
+  }
+
+  getNews() {
+    this.request
+      .getNews(this.info.ticker)
+      .subscribe((news) => (this.news = news))
   }
 
   getTwoYearPrice() {
