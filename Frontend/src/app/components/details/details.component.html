@@ -1,14 +1,16 @@
 <div
   class="container d-flex justify-content-center"
   style="padding-top: 5rem"
-  *ngIf="!info.meta || !info.latest || !prices || !twoYearPrices"
+  *ngIf="
+    !info.meta || !info.latest || !info.latestPrices || !info.twoYearPrices
+  "
 >
   <mat-spinner></mat-spinner>
 </div>
 
 <div
   class="pt-4 container"
-  *ngIf="info.meta && info.latest && prices && twoYearPrices"
+  *ngIf="info.meta && info.latest && info.latestPrices && info.twoYearPrices"
 >
   <ngb-alert *ngIf="toStore" [type]="toStore > 0 ? 'success' : 'danger'">
     {{
@@ -134,19 +136,25 @@
       >
         <mat-tab label="Summary">
           <ng-template matTabContent>
-            <app-summary-tab [info]="info" [prices]="prices"></app-summary-tab>
+            <app-summary-tab
+              [ticker]="info.ticker"
+              [isOpen]="info.isOpen"
+              [meta]="info.meta"
+              [latest]="info.latest"
+              [prices]="info.latestPrices"
+            ></app-summary-tab>
           </ng-template>
         </mat-tab>
         <mat-tab label="Top News">
           <ng-template matTabContent>
-            <app-news-tab [news]="news"></app-news-tab>
+            <app-news-tab [news]="info.news"></app-news-tab>
           </ng-template>
         </mat-tab>
         <mat-tab label="Charts">
           <ng-template matTabContent>
             <app-charts-tab
               [ticker]="info.ticker"
-              [prices]="twoYearPrices"
+              [prices]="info.twoYearPrices"
             ></app-charts-tab>
           </ng-template>
         </mat-tab>

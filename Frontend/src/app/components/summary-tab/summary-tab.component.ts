@@ -6,7 +6,9 @@ import {
   SimpleChanges
 } from '@angular/core'
 import * as Highcharts from 'highcharts/highstock'
-import { Info } from 'src/app/interfaces/info'
+import { LatestInfo } from 'src/app/interfaces/latest'
+import { MetaInfo } from 'src/app/interfaces/meta'
+import { Price } from 'src/app/interfaces/price'
 
 @Component({
   selector: 'app-summary-tab',
@@ -14,8 +16,12 @@ import { Info } from 'src/app/interfaces/info'
   styleUrls: ['./summary-tab.component.css']
 })
 export class SummaryTabComponent implements OnInit, OnChanges {
-  @Input() info: Info
-  @Input() prices: [number, number][]
+  @Input() ticker: string
+  @Input() isOpen: boolean
+  @Input() meta: MetaInfo
+  @Input() latest: LatestInfo
+  @Input() prices: Price[]
+  processedPrices: [number, number][]
   shouldUpdate: boolean = false
 
   Highcharts: typeof Highcharts = Highcharts
@@ -24,19 +30,24 @@ export class SummaryTabComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit(): void {
+    this.processedPrices = this.prices.map((price) => [
+      new Date(price.date).getTime(),
+      price.close
+    ])
+
     this.chartOptions = {
       title: {
-        text: this.info.ticker.toUpperCase()
+        text: this.ticker.toUpperCase()
       },
       rangeSelector: {
         enabled: false
       },
       series: [
         {
-          name: this.info.ticker.toUpperCase(),
+          name: this.ticker.toUpperCase(),
           type: 'line',
-          data: this.prices,
-          color: +this.info.latest.change > 0 ? 'green' : 'red'
+          data: this.processedPrices,
+          color: +this.latest.change > 0 ? 'green' : 'red'
         }
       ],
       tooltip: {
@@ -47,13 +58,17 @@ export class SummaryTabComponent implements OnInit, OnChanges {
 
   // Monitor the change of the prices and then update chart
   ngOnChanges(changes: SimpleChanges) {
-    if (this.chartOptions) {
+    if (this.chartOptions && changes['prices']) {
+      this.processedPrices = changes['prices'].currentValue.map((price) => [
+        new Date(price.date).getTime(),
+        price.close
+      ])
       this.chartOptions.series = [
         {
-          name: this.info.ticker.toUpperCase(),
+          name: this.ticker.toUpperCase(),
           type: 'line',
-          data: this.prices,
-          color: +this.info.latest.change > 0 ? 'green' : 'red'
+          data: this.processedPrices,
+          color: +this.latest.change > 0 ? 'green' : 'red'
         }
       ]
       this.shouldUpdate = true

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import {} from 'rxjs'
 import { Info } from 'src/app/interfaces/info'
-import { News } from 'src/app/interfaces/news'
-import { Price } from 'src/app/interfaces/price'
 import { RequestService } from 'src/app/services/request.service'
 
 @Component({
@@ -13,9 +11,6 @@ import { RequestService } from 'src/app/services/request.service'
 })
 export class DetailsComponent implements OnInit {
   info: Info = {}
-  prices: [number, number][]
-  twoYearPrices: Price[]
-  news: News[]
   time: Date
   dataTime: Date
   updateCounter: number
@@ -68,7 +63,7 @@ export class DetailsComponent implements OnInit {
   getNews() {
     this.request
       .getNews(this.info.ticker)
-      .subscribe((news) => (this.news = news))
+      .subscribe((news) => (this.info.news = news))
   }
 
   getTwoYearPrice() {
@@ -80,7 +75,7 @@ export class DetailsComponent implements OnInit {
         '12hour'
       )
       .subscribe((prices) => {
-        this.twoYearPrices = prices
+        this.info.twoYearPrices = prices
       })
   }
 
@@ -111,10 +106,7 @@ export class DetailsComponent implements OnInit {
       this.request
         .getPrices(this.info.ticker, this.dataTime, '4min')
         .subscribe((prices) => {
-          this.prices = prices.map((price) => [
-            new Date(price.date).getTime(),
-            price.close
-          ])
+          this.info.latestPrices = prices
         })
     })
   }
