@@ -83,7 +83,7 @@ export class DetailsComponent implements OnInit {
 
       // Fetch the day prices
       this.request
-        .getPrices(this.info.ticker, this.dataTime)
+        .getPrices(this.info.ticker, this.dataTime, '4min')
         .subscribe((prices) => {
           this.prices = prices.map((price) => [
             new Date(price.date).getTime(),

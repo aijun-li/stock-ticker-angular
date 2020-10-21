@@ -32,12 +32,16 @@ export class RequestService {
   }
 
   // Fetch historical prices for a ticker
-  getPrices(ticker: string, startDate: Date): Observable<Price[]> {
+  getPrices(
+    ticker: string,
+    startDate: Date,
+    freq: string
+  ): Observable<Price[]> {
     let year = startDate.getUTCFullYear()
     let month = (startDate.getUTCMonth() + 1).toString().padStart(2, '0')
     let day = startDate.getUTCDate().toString().padStart(2, '0')
     return this.http.get<Price[]>(
-      `${this.baseURL}/details/prices/${ticker}/${year}-${month}-${day}`
+      `${this.baseURL}/details/prices/${ticker}/${year}-${month}-${day}/${freq}`
     )
   }
 
