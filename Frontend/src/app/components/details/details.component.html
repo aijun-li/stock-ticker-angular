@@ -133,16 +133,22 @@
         animationDuration="0ms"
       >
         <mat-tab label="Summary">
-          <app-summary-tab [info]="info" [prices]="prices"></app-summary-tab>
+          <ng-template matTabContent>
+            <app-summary-tab [info]="info" [prices]="prices"></app-summary-tab>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Top News">
-          <app-news-tab [news]="news"></app-news-tab>
+          <ng-template matTabContent>
+            <app-news-tab [news]="news"></app-news-tab>
+          </ng-template>
         </mat-tab>
         <mat-tab label="Charts">
-          <app-charts-tab
-            [ticker]="info.ticker"
-            [prices]="twoYearPrices"
-          ></app-charts-tab>
+          <ng-template matTabContent>
+            <app-charts-tab
+              [ticker]="info.ticker"
+              [prices]="twoYearPrices"
+            ></app-charts-tab>
+          </ng-template>
         </mat-tab>
       </mat-tab-group>
     </div>
