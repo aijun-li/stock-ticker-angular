@@ -17,7 +17,11 @@
 </div>
 
 <div class="pt-4 container" *ngIf="!isLoading && info.meta">
-  <ngb-alert *ngIf="toStore" [type]="toStore > 0 ? 'success' : 'danger'">
+  <ngb-alert
+    *ngIf="toStore"
+    [type]="toStore > 0 ? 'success' : 'danger'"
+    (closed)="toStore = 0"
+  >
     {{
       info.ticker + ' ' + (toStore > 0 ? 'added to ' : 'removed from ')
     }}Watchlist.
