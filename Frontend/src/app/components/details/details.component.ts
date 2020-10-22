@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { zip } from 'rxjs'
 import { Info } from 'src/app/interfaces/info'
@@ -10,14 +10,14 @@ import { RequestService } from 'src/app/services/request.service'
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
   info: Info = {}
   time: Date
   dataTime: Date
   updateCounter: number
   isLoading: boolean = true
   isStored: boolean
-  counter: number = 0
+  alertCounter: number = 0
   toStore: number = 0
 
   constructor(private route: ActivatedRoute, private request: RequestService) {}
@@ -55,6 +55,11 @@ export class DetailsComponent implements OnInit {
     ) as string[]).includes(this.info.ticker)
   }
 
+  ngOnDestroy(): void {
+    window.clearInterval(this.updateCounter)
+    window.clearTimeout(this.alertCounter)
+  }
+
   toggleStore(): void {
     let watchlist: string[] = JSON.parse(
       window.localStorage.getItem('watchlist')
@@ -63,13 +68,13 @@ export class DetailsComponent implements OnInit {
       let index = watchlist.indexOf(this.info.ticker)
       watchlist.splice(index, 1)
       this.toStore = -1
-      window.clearTimeout(this.counter)
-      this.counter = window.setTimeout(() => (this.toStore = 0), 5000)
+      window.clearTimeout(this.alertCounter)
+      this.alertCounter = window.setTimeout(() => (this.toStore = 0), 5000)
     } else {
       watchlist.push(this.info.ticker)
       this.toStore = 1
-      window.clearTimeout(this.counter)
-      this.counter = window.setTimeout(() => (this.toStore = 0), 5000)
+      window.clearTimeout(this.alertCounter)
+      this.alertCounter = window.setTimeout(() => (this.toStore = 0), 5000)
     }
     window.localStorage.setItem('watchlist', JSON.stringify(watchlist))
     this.isStored = !this.isStored
