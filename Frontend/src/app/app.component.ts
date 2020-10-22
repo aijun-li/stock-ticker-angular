@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core'
 })
 export class AppComponent implements OnInit {
   ngOnInit() {
-    if (!window.localStorage.getItem('collections')) {
-      window.localStorage.setItem('collections', '[]')
+    if (!window.localStorage.getItem('watchlist')) {
+      window.localStorage.setItem('watchlist', '[]')
     }
   }
 }

@@ -51,27 +51,27 @@ export class DetailsComponent implements OnInit {
     })
 
     this.isStored = (JSON.parse(
-      window.localStorage.getItem('collections')
+      window.localStorage.getItem('watchlist')
     ) as string[]).includes(this.info.ticker)
   }
 
   toggleStore(): void {
-    let collections: string[] = JSON.parse(
-      window.localStorage.getItem('collections')
+    let watchlist: string[] = JSON.parse(
+      window.localStorage.getItem('watchlist')
     )
     if (this.isStored) {
-      let index = collections.indexOf(this.info.ticker)
-      collections.splice(index, 1)
+      let index = watchlist.indexOf(this.info.ticker)
+      watchlist.splice(index, 1)
       this.toStore = -1
       window.clearTimeout(this.counter)
       this.counter = window.setTimeout(() => (this.toStore = 0), 5000)
     } else {
-      collections.push(this.info.ticker)
+      watchlist.push(this.info.ticker)
       this.toStore = 1
       window.clearTimeout(this.counter)
       this.counter = window.setTimeout(() => (this.toStore = 0), 5000)
     }
-    window.localStorage.setItem('collections', JSON.stringify(collections))
+    window.localStorage.setItem('watchlist', JSON.stringify(watchlist))
     this.isStored = !this.isStored
   }
 
