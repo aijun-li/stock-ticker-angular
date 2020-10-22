@@ -17,7 +17,7 @@ export class WatchlistComponent implements OnInit {
   constructor(private request: RequestService, private router: Router) {}
 
   ngOnInit(): void {
-    this.tickers = JSON.parse(window.localStorage.getItem('watchlist'))
+    this.tickers = JSON.parse(window.localStorage.getItem('watchlist')).sort()
 
     if (this.tickers.length) {
       this.infos = this.tickers.map((ticker) => ({ ticker }))
