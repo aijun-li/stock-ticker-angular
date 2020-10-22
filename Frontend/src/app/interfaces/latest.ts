@@ -16,6 +16,6 @@ export interface LatestInfo {
   bidPrice: number
   bidSize: number
   volume: number
-  change: string
-  changeP: string
+  change?: string
+  changeP?: string
 }
