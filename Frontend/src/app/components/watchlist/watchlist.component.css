@@ -17,3 +17,15 @@
 .color-down {
   color: #df3522;
 }
+
+@media (max-width: 768px) {
+  ngb-alert {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  ngb-alert {
+    font-size: 0.7rem;
+  }
+}
