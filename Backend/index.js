@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express()
 const fetch = require('node-fetch')
+const path = require('path')
 const cors = require('cors')
 
 app.use(cors())
+app.use(express.static(path.join(__dirname, 'static')))
 
 const TIINGO_TOKEN = 'ded10bb46330604d17568c0c6bc1319a67c1e400'
 const TIINGO_BASE = 'https://api.tiingo.com'
@@ -78,6 +80,11 @@ app.get('/api/news/:ticker', async (req, res) => {
   )
 })
 
-app.listen(3000, '192.168.50.200', () => {
+// Route for spa
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'))
+})
+
+app.listen(3000, () => {
   console.log('Start listening!')
 })
