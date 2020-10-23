@@ -11,7 +11,7 @@ import { Suggestion } from '../interfaces/suggestion'
   providedIn: 'root'
 })
 export class RequestService {
-  private baseURL = 'http://192.168.50.200:3000/api'
+  private baseURL = '/api'
   constructor(private http: HttpClient) {}
 
   // Fetch suggestions for auto-completion
