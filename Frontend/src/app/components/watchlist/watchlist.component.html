@@ -4,7 +4,7 @@
     <div *ngIf="isLoading" class="d-flex justify-content-center pt-5">
       <mat-spinner [strokeWidth]="8"></mat-spinner>
     </div>
-    <ng-container *ngIf="!isLoading && tickers && !tickers.length">
+    <ng-container *ngIf="!isLoading && watchlist && !watchlist.length">
       <ngb-alert
         type="warning"
         class="text-center text-dark"
@@ -13,42 +13,38 @@
         Currently you don't have any stock in your watchlist.
       </ngb-alert>
     </ng-container>
-    <ng-container *ngIf="!isLoading && tickers && tickers.length">
+    <ng-container *ngIf="!isLoading && watchlist && watchlist.length">
       <div
-        *ngFor="let info of infos"
+        *ngFor="let item of watchlist; let i = index"
         class="card my-3 position-relative"
-        (click)="toDetail(info.ticker)"
+        (click)="toDetail(item.ticker)"
       >
-        <button
-          type="button"
-          class="close"
-          (click)="remove($event, info.ticker)"
-        >
+        <button type="button" class="close" (click)="remove($event, i)">
           <span>&times;</span>
         </button>
         <div class="card-body">
           <div class="row" style="font-size: 2rem">
             <div class="col">
-              {{ info.ticker | uppercase }}
+              {{ item.ticker | uppercase }}
             </div>
             <div
               class="col text-right"
-              [class.color-up]="info.latest.change > 0"
-              [class.color-down]="info.latest.change < 0"
+              [class.color-up]="latest[i].change > 0"
+              [class.color-down]="latest[i].change < 0"
             >
-              {{ info.latest.last }}
+              {{ latest[i].last }}
             </div>
           </div>
           <div class="row" style="font-weight: 500">
             <div class="col">
-              {{ info.meta.name }}
+              {{ item.name }}
             </div>
             <div
               class="col text-right"
-              [class.color-up]="info.latest.change > 0"
-              [class.color-down]="info.latest.change < 0"
+              [class.color-up]="latest[i].change > 0"
+              [class.color-down]="latest[i].change < 0"
             >
-              <span *ngIf="info.latest.change > 0">
+              <span *ngIf="latest[i].change > 0">
                 <svg
                   width="1em"
                   height="1em"
@@ -62,7 +58,7 @@
                   />
                 </svg>
               </span>
-              <span *ngIf="info.latest.change < 0">
+              <span *ngIf="latest[i].change < 0">
                 <svg
                   width="1em"
                   height="1em"
@@ -76,7 +72,7 @@
                   />
                 </svg>
               </span>
-              {{ info.latest.change + ' (' + info.latest.changeP + '%)' }}
+              {{ latest[i].change + ' (' + latest[i].changeP + '%)' }}
             </div>
           </div>
         </div>

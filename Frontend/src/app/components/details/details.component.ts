@@ -5,6 +5,7 @@ import { zip } from 'rxjs'
 import { Info } from 'src/app/interfaces/info'
 import { LatestInfo } from 'src/app/interfaces/latest'
 import { PortfolioItem } from 'src/app/interfaces/portfolio-item'
+import { WatchlistItem } from 'src/app/interfaces/watchlist-item'
 import { RequestService } from 'src/app/services/request.service'
 
 @Component({
@@ -59,9 +60,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
     })
 
-    this.isStored = (JSON.parse(
-      window.localStorage.getItem('watchlist')
-    ) as string[]).includes(this.info.ticker)
+    this.isStored = JSON.parse(window.localStorage.getItem('watchlist')).some(
+      (item) => item.ticker === this.info.ticker
+    )
   }
 
   ngOnDestroy(): void {
@@ -70,17 +71,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   toggleStore(): void {
-    let watchlist: string[] = JSON.parse(
+    let watchlist: WatchlistItem[] = JSON.parse(
       window.localStorage.getItem('watchlist')
     )
     if (this.isStored) {
-      let index = watchlist.indexOf(this.info.ticker)
+      let index = watchlist.findIndex(
+        (item) => item.ticker === this.info.ticker
+      )
       watchlist.splice(index, 1)
       this.toStore = -1
       window.clearTimeout(this.alertCounter)
       this.alertCounter = window.setTimeout(() => (this.toStore = 0), 5000)
     } else {
-      watchlist.push(this.info.ticker)
+      watchlist.push({ ticker: this.info.ticker, name: this.info.meta.name })
       this.toStore = 1
       window.clearTimeout(this.alertCounter)
       this.alertCounter = window.setTimeout(() => (this.toStore = 0), 5000)

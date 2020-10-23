@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { zip } from 'rxjs'
-import { Info } from 'src/app/interfaces/info'
+import { LatestInfo } from 'src/app/interfaces/latest'
+import { WatchlistItem } from 'src/app/interfaces/watchlist-item'
 import { RequestService } from 'src/app/services/request.service'
 
 @Component({
@@ -10,37 +11,33 @@ import { RequestService } from 'src/app/services/request.service'
   styleUrls: ['./watchlist.component.css']
 })
 export class WatchlistComponent implements OnInit {
-  tickers: string[]
-  infos: Info[]
+  watchlist: WatchlistItem[]
+  latest: LatestInfo[]
   isLoading: boolean = true
 
   constructor(private request: RequestService, private router: Router) {}
 
   ngOnInit(): void {
-    this.tickers = JSON.parse(window.localStorage.getItem('watchlist')).sort()
+    this.watchlist = JSON.parse(
+      window.localStorage.getItem('watchlist')
+    ).sort((a, b) => (a.ticker < b.ticker ? -1 : 1))
 
-    if (this.tickers.length) {
-      this.infos = this.tickers.map((ticker) => ({ ticker }))
-
+    if (this.watchlist.length) {
       // Fetch all necessary data
-      let latestRequests$ = this.tickers.map((ticker) =>
-        this.request.getLatest(ticker)
-      )
-      let metaRequests$ = this.tickers.map((ticker) =>
-        this.request.getMeta(ticker)
+      let requests$ = this.watchlist.map((item) =>
+        this.request.getLatest(item.ticker)
       )
       // Combine all requests and process after all are done
-      zip(...latestRequests$, ...metaRequests$).subscribe((data) => {
-        let len = this.tickers.length
-        for (let i = 0; i < len; i++) {
-          let change = data[i][0].last - data[i][0].prevClose
-          let changeP = (change * 100) / data[i][0].prevClose
-          this.infos[i].latest = Object.assign(data[i][0], {
-            change: change.toFixed(2),
-            changeP: changeP.toFixed(2)
+      zip(...requests$).subscribe((data) => {
+        this.latest = data.map((item) =>
+          Object.assign(item[0], {
+            change: (item[0].last - item[0].prevClose).toFixed(2),
+            changeP: (
+              ((item[0].last - item[0].prevClose) * 100) /
+              item[0].prevClose
+            ).toFixed(2)
           })
-          this.infos[i].meta = data[i + len]
-        }
+        )
         this.isLoading = false
       })
     } else {
@@ -54,11 +51,10 @@ export class WatchlistComponent implements OnInit {
   }
 
   // Remove selected ticker from the watchlist
-  remove(event: Event, ticker: string): void {
+  remove(event: Event, index: number): void {
     event.stopPropagation()
-    let index = this.tickers.indexOf(ticker)
-    this.tickers.splice(index, 1)
-    window.localStorage.setItem('watchlist', JSON.stringify(this.tickers))
-    this.infos.splice(index, 1)
+    this.watchlist.splice(index, 1)
+    window.localStorage.setItem('watchlist', JSON.stringify(this.watchlist))
+    this.latest.splice(index, 1)
   }
 }
