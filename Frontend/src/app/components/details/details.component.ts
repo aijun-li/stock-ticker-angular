@@ -171,6 +171,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
     window.localStorage.setItem('portfolio', JSON.stringify(portfolio))
     modal.close()
+    this.buyQty = 0
     window.clearTimeout(this.buyAlertCounter)
     this.showBuyAlert = true
     this.buyAlertCounter = window.setTimeout(

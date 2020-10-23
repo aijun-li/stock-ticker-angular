@@ -60,8 +60,6 @@ export class PortfolioComponent implements OnInit {
 
   // Make a deal
   deal(modal: NgbActiveModal): void {
-    modal.close()
-
     let selectedItem = this.portfolio[this.selectedIndex]
     let tmpQty = selectedItem.quantity
     let tmpCost = selectedItem.cost
@@ -79,6 +77,9 @@ export class PortfolioComponent implements OnInit {
     }
 
     window.localStorage.setItem('portfolio', JSON.stringify(this.portfolio))
+
+    modal.close()
+    this.qty = 0
 
     // Only fetch latest info when any stock remain in the portfolio
     if (this.portfolio.length) {
