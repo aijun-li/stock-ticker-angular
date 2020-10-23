@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: 'details/:ticker', component: DetailsComponent },
   { path: 'watchlist', component: WatchlistComponent },
   { path: 'portfolio', component: PortfolioComponent },
-  { path: '', component: SearchComponent, pathMatch: 'full' }
+  { path: '', component: SearchComponent, pathMatch: 'full' },
+  { path: '**', redirectTo: '/' }
 ]
 
 @NgModule({
