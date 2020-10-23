@@ -26,7 +26,9 @@ export class PortfolioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.portfolio = JSON.parse(window.localStorage.getItem('portfolio'))
+    this.portfolio = JSON.parse(
+      window.localStorage.getItem('portfolio')
+    ).sort((a, b) => (a.ticker < b.ticker ? -1 : 1))
 
     if (this.portfolio.length) {
       this.getLatest()
