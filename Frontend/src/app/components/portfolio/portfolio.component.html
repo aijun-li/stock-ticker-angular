@@ -49,14 +49,12 @@
                 <div class="col">Change:</div>
                 <div
                   class="col text-right"
-                  [class.color-up]="
-                    latest[i].last - item.cost / item.quantity > 0
-                  "
+                  [class.color-up]="latest[i].last > item.cost / item.quantity"
                   [class.color-down]="
-                    latest[i].last - item.cost / item.quantity < 0
+                    latest[i].last < item.cost / item.quantity
                   "
                 >
-                  <span *ngIf="latest[i].last - item.cost / item.quantity > 0">
+                  <span *ngIf="latest[i].last > item.cost / item.quantity">
                     <svg
                       width="0.8em"
                       height="0.8em"
@@ -70,7 +68,7 @@
                       />
                     </svg>
                   </span>
-                  <span *ngIf="latest[i].last - item.cost / item.quantity < 0">
+                  <span *ngIf="latest[i].last < item.cost / item.quantity">
                     <svg
                       width="0.8em"
                       height="0.8em"
@@ -93,11 +91,9 @@
                 <div class="col">Current Price:</div>
                 <div
                   class="col text-right"
-                  [class.color-up]="
-                    latest[i].last - item.cost / item.quantity > 0
-                  "
+                  [class.color-up]="latest[i].last > item.cost / item.quantity"
                   [class.color-down]="
-                    latest[i].last - item.cost / item.quantity < 0
+                    latest[i].last < item.cost / item.quantity
                   "
                 >
                   {{ latest[i].last | number: '1.0-3' }}
@@ -107,11 +103,9 @@
                 <div class="col">Market Value:</div>
                 <div
                   class="col text-right"
-                  [class.color-up]="
-                    latest[i].last - item.cost / item.quantity > 0
-                  "
+                  [class.color-up]="latest[i].last > item.cost / item.quantity"
                   [class.color-down]="
-                    latest[i].last - item.cost / item.quantity < 0
+                    latest[i].last < item.cost / item.quantity
                   "
                 >
                   {{ latest[i].last * item.quantity | number: '1.0-3' }}
