@@ -154,12 +154,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
     let portfolio: PortfolioItem[] = JSON.parse(
       window.localStorage.getItem('portfolio')
     )
-    portfolio.push({
-      ticker: this.info.ticker,
-      name: this.info.meta.name,
-      quantity: this.buyQty,
-      cost: this.buyQty * this.info.latest.last
-    })
+    let index = portfolio.findIndex((item) => item.ticker === this.info.ticker)
+    if (index === -1) {
+      portfolio.push({
+        ticker: this.info.ticker,
+        name: this.info.meta.name,
+        quantity: this.buyQty,
+        cost: this.buyQty * this.info.latest.last
+      })
+    } else {
+      portfolio[index].quantity += this.buyQty
+      portfolio[index].cost += this.buyQty * this.info.latest.last
+    }
     window.localStorage.setItem('portfolio', JSON.stringify(portfolio))
     modal.close()
     window.clearTimeout(this.buyAlertCounter)
