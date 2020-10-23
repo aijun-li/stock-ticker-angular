@@ -21,10 +21,18 @@
     *ngIf="toStore"
     [type]="toStore > 0 ? 'success' : 'danger'"
     (closed)="toStore = 0"
+    class="text-center"
   >
     {{
       info.ticker + ' ' + (toStore > 0 ? 'added to ' : 'removed from ')
     }}Watchlist.
+  </ngb-alert>
+  <ngb-alert
+    *ngIf="showBuyAlert"
+    type="success"
+    (closed)="showBuyAlert = false"
+    class="text-center"
+    >{{ info.ticker + ' bought successfully!' }}
   </ngb-alert>
 
   <div class="row" style="font-size: 2.3rem">
@@ -119,7 +127,7 @@
   </div>
   <div class="row mt-2">
     <div class="col">
-      <button class="btn btn-success">Buy</button>
+      <button class="btn btn-success" (click)="open(content)">Buy</button>
     </div>
   </div>
   <div class="row">
@@ -170,4 +178,50 @@
       </mat-tab-group>
     </div>
   </div>
+
+  <!-- Buy modal -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <p class="modal-title" id="modal-basic-title">{{ info.ticker }}</p>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+        style="outline: none"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container">
+        <div class="row">
+          <div class="col">Current Price: {{ info.latest.last }}</div>
+        </div>
+        <div class="row">
+          <div class="col">
+            Quantity
+            <input
+              [(ngModel)]="buyQty"
+              type="number"
+              min="0"
+              class="form-control d-inline-block ml-1"
+              style="width: 12rem"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+      <span>Total: {{ buyQty * info.latest.last | number: '0.2-2' }}</span>
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="buy(modal)"
+        [disabled]="!buyQty || buyQty < 1"
+      >
+        Buy
+      </button>
+    </div>
+  </ng-template>
 </div>

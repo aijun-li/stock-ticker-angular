@@ -10,5 +10,8 @@ export class AppComponent implements OnInit {
     if (!window.localStorage.getItem('watchlist')) {
       window.localStorage.setItem('watchlist', '[]')
     }
+    if (!window.localStorage.getItem('portfolio')) {
+      window.localStorage.setItem('portfolio', '[]')
+    }
   }
 }

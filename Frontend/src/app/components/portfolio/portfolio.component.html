@@ -1,1 +1,207 @@
-<p>portfolio works!</p>
+<div class="container pt-5">
+  <h1 style="font-weight: 400">My Portfolio</h1>
+
+  <div class="mt-5">
+    <div *ngIf="isLoading" class="d-flex justify-content-center pt-5">
+      <mat-spinner [strokeWidth]="8"></mat-spinner>
+    </div>
+
+    <ng-container *ngIf="!isLoading && portfolio && !portfolio.length">
+      <ngb-alert
+        type="warning"
+        class="text-center text-dark"
+        [dismissible]="false"
+      >
+        Currently you don't have any stock.
+      </ngb-alert>
+    </ng-container>
+
+    <ng-container *ngIf="!isLoading && portfolio && portfolio.length">
+      <div *ngFor="let item of portfolio; let i = index" class="card my-3">
+        <div class="card-header" (click)="routeToDetails(item.ticker)">
+          <span style="font-size: 1.8rem">{{ item.ticker }}</span>
+          <span class="text-secondary ml-2" style="font-size: 1.2rem">{{
+            item.name
+          }}</span>
+        </div>
+        <div class="card-body" style="font-size: 1.1rem">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="row">
+                <div class="col">Quantity:</div>
+                <div class="col text-right">{{ item.quantity }}</div>
+              </div>
+              <div class="row">
+                <div class="col-auto">Avg. Cost/Share:</div>
+                <div class="col text-right">
+                  {{ item.cost / item.quantity | number: '1.0-3' }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">Total Cost:</div>
+                <div class="col text-right">
+                  {{ item.cost | number: '1.0-3' }}
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="row">
+                <div class="col">Change:</div>
+                <div
+                  class="col text-right"
+                  [class.color-up]="
+                    latest[i].last - item.cost / item.quantity > 0
+                  "
+                  [class.color-down]="
+                    latest[i].last - item.cost / item.quantity < 0
+                  "
+                >
+                  <span *ngIf="latest[i].last - item.cost / item.quantity > 0">
+                    <svg
+                      width="0.8em"
+                      height="0.8em"
+                      viewBox="0 0 16 16"
+                      class="bi bi-caret-up-fill"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"
+                      />
+                    </svg>
+                  </span>
+                  <span *ngIf="latest[i].last - item.cost / item.quantity < 0">
+                    <svg
+                      width="0.8em"
+                      height="0.8em"
+                      viewBox="0 0 16 16"
+                      class="bi bi-caret-down-fill"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                      />
+                    </svg>
+                  </span>
+                  {{
+                    latest[i].last - item.cost / item.quantity | number: '1.0-3'
+                  }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">Current Price:</div>
+                <div
+                  class="col text-right"
+                  [class.color-up]="
+                    latest[i].last - item.cost / item.quantity > 0
+                  "
+                  [class.color-down]="
+                    latest[i].last - item.cost / item.quantity < 0
+                  "
+                >
+                  {{ latest[i].last | number: '1.0-3' }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">Market Value:</div>
+                <div
+                  class="col text-right"
+                  [class.color-up]="
+                    latest[i].last - item.cost / item.quantity > 0
+                  "
+                  [class.color-down]="
+                    latest[i].last - item.cost / item.quantity < 0
+                  "
+                >
+                  {{ latest[i].last * item.quantity | number: '1.0-3' }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-right">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm mx-2 py-2"
+            style="width: 3.5rem"
+            (click)="open(true, i, content)"
+          >
+            Buy
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm mx-2 py-2"
+            style="width: 3.5rem"
+            (click)="open(false, i, content)"
+          >
+            Sell
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Buy/Sell modal -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <p class="modal-title" id="modal-basic-title">
+        {{ portfolio[selectedIndex] && portfolio[selectedIndex].ticker }}
+      </p>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+        style="outline: none"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            Current Price:
+            {{ latest[selectedIndex] && latest[selectedIndex].last }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            Quantity
+            <input
+              [(ngModel)]="qty"
+              type="number"
+              min="0"
+              class="form-control d-inline-block ml-1"
+              [style.width.rem]="buyState ? 12 : 5.5"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+      <span
+        >Total:
+        {{
+          latest[selectedIndex] && qty * latest[selectedIndex].last
+            | number: '0.2-2'
+        }}</span
+      >
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="deal(modal)"
+        [disabled]="
+          !qty ||
+          qty < 1 ||
+          (!buyState &&
+            portfolio[selectedIndex] &&
+            qty > portfolio[selectedIndex].quantity)
+        "
+      >
+        {{ buyState ? 'Buy' : 'Sell' }}
+      </button>
+    </div>
+  </ng-template>
+</div>

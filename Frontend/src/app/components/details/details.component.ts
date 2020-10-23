@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { zip } from 'rxjs'
 import { Info } from 'src/app/interfaces/info'
 import { LatestInfo } from 'src/app/interfaces/latest'
+import { PortfolioItem } from 'src/app/interfaces/portfolio-item'
 import { RequestService } from 'src/app/services/request.service'
 
 @Component({
@@ -18,9 +20,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
   isLoading: boolean = true
   isStored: boolean
   alertCounter: number = 0
+  buyAlertCounter: number = 0
   toStore: number = 0
+  showBuyAlert: boolean = false
+  buyQty: number = 0
 
-  constructor(private route: ActivatedRoute, private request: RequestService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private request: RequestService,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.info.ticker = this.route.snapshot.paramMap.get('ticker').toUpperCase()
@@ -133,5 +142,31 @@ export class DetailsComponent implements OnInit, OnDestroy {
     } else {
       this.info.isOpen = false
     }
+  }
+
+  // Open modal
+  open(content): void {
+    this.modalService.open(content)
+  }
+
+  // Close modal
+  buy(modal: NgbActiveModal): void {
+    let portfolio: PortfolioItem[] = JSON.parse(
+      window.localStorage.getItem('portfolio')
+    )
+    portfolio.push({
+      ticker: this.info.ticker,
+      name: this.info.meta.name,
+      quantity: this.buyQty,
+      cost: this.buyQty * this.info.latest.last
+    })
+    window.localStorage.setItem('portfolio', JSON.stringify(portfolio))
+    modal.close()
+    window.clearTimeout(this.buyAlertCounter)
+    this.showBuyAlert = true
+    this.buyAlertCounter = window.setTimeout(
+      () => (this.showBuyAlert = false),
+      5000
+    )
   }
 }
