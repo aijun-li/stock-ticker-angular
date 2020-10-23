@@ -2,9 +2,7 @@ const express = require('express')
 const app = express()
 const fetch = require('node-fetch')
 const path = require('path')
-const cors = require('cors')
 
-app.use(cors())
 app.use(express.static(path.join(__dirname, 'static')))
 
 const TIINGO_TOKEN = 'ded10bb46330604d17568c0c6bc1319a67c1e400'
@@ -85,6 +83,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'static', 'index.html'))
 })
 
-app.listen(3000, () => {
-  console.log('Start listening!')
+const PORT = process.env.PORT || 8080
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`)
+  console.log('Press Ctrl+C to quit.')
 })
