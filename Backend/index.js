@@ -36,8 +36,10 @@ app.get('/api/details/meta/:ticker', async (req, res) => {
 })
 
 // Route for retrieving latest prices
-app.get('/api/details/latest/:ticker', async (req, res) => {
-  let latestRes = await fetch(`${TIINGO_BASE}/iex/${req.params.ticker}?token=${TIINGO_TOKEN}`)
+app.get('/api/details/latest', async (req, res) => {
+  let latestRes = await fetch(
+    `${TIINGO_BASE}/iex?tickers=${req.query.tickers}&token=${TIINGO_TOKEN}`
+  )
   let latestInfo = await latestRes.json()
   res.send(latestInfo)
 })
