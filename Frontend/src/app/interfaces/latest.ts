@@ -2,9 +2,9 @@ export interface LatestInfo {
   prevClose: number
   mid: number
   lastSaleTimestamp: string
-  open: 121.28
+  open: number
   askPrice: number
-  low: 118.81
+  low: number
   ticker: string
   timestamp: string
   lastSize: null
