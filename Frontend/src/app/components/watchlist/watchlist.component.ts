@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
-import { zip } from 'rxjs'
 import { LatestInfo } from 'src/app/interfaces/latest'
 import { WatchlistItem } from 'src/app/interfaces/watchlist-item'
 import { RequestService } from 'src/app/services/request.service'
@@ -23,26 +22,37 @@ export class WatchlistComponent implements OnInit {
     ).sort((a, b) => (a.ticker < b.ticker ? -1 : 1))
 
     if (this.watchlist.length) {
-      // Fetch all necessary data
-      let requests$ = this.watchlist.map((item) =>
-        this.request.getLatest(item.ticker)
-      )
-      // Combine all requests and process after all are done
-      zip(...requests$).subscribe((data) => {
-        this.latest = data.map((item) =>
-          Object.assign(item[0], {
-            change: (item[0].last - item[0].prevClose).toFixed(2),
-            changeP: (
-              ((item[0].last - item[0].prevClose) * 100) /
-              item[0].prevClose
-            ).toFixed(2)
-          })
-        )
-        this.isLoading = false
-      })
+      this.getLatest()
     } else {
       this.isLoading = false
     }
+  }
+
+  // Fetch latest data
+  getLatest(): void {
+    this.latest = []
+    let tickers = this.watchlist.map((item) => item.ticker).join(',')
+    this.request.getLatest(tickers).subscribe((data) => {
+      let tmpData = data.map((item) =>
+        Object.assign(item, {
+          change: (item.last - item.prevClose).toFixed(2),
+          changeP: (
+            ((item.last - item.prevClose) * 100) /
+            item.prevClose
+          ).toFixed(2)
+        })
+      )
+
+      for (let i = 0; i < this.watchlist.length; i++) {
+        let index = tmpData.findIndex(
+          (item) =>
+            item.ticker.toUpperCase() === this.watchlist[i].ticker.toUpperCase()
+        )
+        this.latest[i] = tmpData[index]
+      }
+
+      this.isLoading = false
+    })
   }
 
   // Navigate to the corresponding details page

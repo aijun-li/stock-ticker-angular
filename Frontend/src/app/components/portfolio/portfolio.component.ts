@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { zip } from 'rxjs'
 import { LatestInfo } from 'src/app/interfaces/latest'
 import { PortfolioItem } from 'src/app/interfaces/portfolio-item'
 import { RequestService } from 'src/app/services/request.service'
@@ -38,11 +37,16 @@ export class PortfolioComponent implements OnInit {
   }
 
   getLatest(): void {
-    let requests$ = this.portfolio.map((item) =>
-      this.request.getLatest(item.ticker)
-    )
-    zip(...requests$).subscribe((data) => {
-      this.latest = data.map((item) => item[0])
+    this.latest = []
+    let tickers = this.portfolio.map((item) => item.ticker).join(',')
+    this.request.getLatest(tickers).subscribe((data) => {
+      for (let i = 0; i < this.portfolio.length; i++) {
+        let index = data.findIndex(
+          (item) =>
+            item.ticker.toUpperCase() === this.portfolio[i].ticker.toUpperCase()
+        )
+        this.latest[i] = data[index]
+      }
       this.isLoading = false
     })
   }

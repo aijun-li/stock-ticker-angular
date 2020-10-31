@@ -26,9 +26,9 @@ export class RequestService {
   }
 
   // Fetch latest price for a ticker
-  getLatest(ticker: string): Observable<LatestInfo[]> {
+  getLatest(tickers: string): Observable<LatestInfo[]> {
     return this.http.get<LatestInfo[]>(
-      `${this.baseURL}/details/latest/${ticker}`
+      `${this.baseURL}/details/latest?tickers=${tickers}`
     )
   }
 
