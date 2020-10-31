@@ -68,6 +68,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     window.clearInterval(this.updateCounter)
     window.clearTimeout(this.alertCounter)
+    window.clearTimeout(this.buyAlertCounter)
   }
 
   toggleStore(): void {
