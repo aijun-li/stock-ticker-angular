@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment'
 import { LatestInfo } from '../interfaces/latest'
 import { MetaInfo } from '../interfaces/meta'
 import { News } from '../interfaces/news'
@@ -11,7 +12,7 @@ import { Suggestion } from '../interfaces/suggestion'
   providedIn: 'root'
 })
 export class RequestService {
-  private baseURL = '/api'
+  private baseURL = environment.baseURL
   constructor(private http: HttpClient) {}
 
   // Fetch suggestions for auto-completion
