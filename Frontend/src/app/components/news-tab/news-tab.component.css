@@ -1,15 +1,3 @@
-@media (min-width: 992px) {
-  .news-image {
-    max-height: 4rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .news-image {
-    max-height: 15rem;
-  }
-}
-
 .news-image {
   object-fit: cover;
 }
