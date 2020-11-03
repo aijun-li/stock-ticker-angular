@@ -12,7 +12,7 @@ import { RequestService } from 'src/app/services/request.service'
 })
 export class PortfolioComponent implements OnInit {
   portfolio: PortfolioItem[]
-  latest: LatestInfo[]
+  latest: LatestInfo[] = []
   isLoading: boolean = true
   selectedIndex: number = 0
   buyState: boolean = true
@@ -37,7 +37,6 @@ export class PortfolioComponent implements OnInit {
   }
 
   getLatest(): void {
-    this.latest = []
     let tickers = this.portfolio.map((item) => item.ticker).join(',')
     this.request.getLatest(tickers).subscribe((data) => {
       for (let i = 0; i < this.portfolio.length; i++) {

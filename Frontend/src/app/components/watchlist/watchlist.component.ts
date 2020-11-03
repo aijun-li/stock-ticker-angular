@@ -11,7 +11,7 @@ import { RequestService } from 'src/app/services/request.service'
 })
 export class WatchlistComponent implements OnInit {
   watchlist: WatchlistItem[]
-  latest: LatestInfo[]
+  latest: LatestInfo[] = []
   isLoading: boolean = true
 
   constructor(private request: RequestService, private router: Router) {}
@@ -30,7 +30,6 @@ export class WatchlistComponent implements OnInit {
 
   // Fetch latest data
   getLatest(): void {
-    this.latest = []
     let tickers = this.watchlist.map((item) => item.ticker).join(',')
     this.request.getLatest(tickers).subscribe((data) => {
       let tmpData = data.map((item) =>
