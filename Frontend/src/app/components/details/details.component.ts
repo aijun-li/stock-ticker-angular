@@ -50,10 +50,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
             this.isLoading = false
 
             // Set auto updating
-            this.updateCounter = window.setInterval(
-              () => this.getUpdate(),
-              15000
-            )
+            if (this.info.isOpen) {
+              this.updateCounter = window.setInterval(
+                () => this.getUpdate(),
+                15000
+              )
+            }
           })
         this.getNews()
         this.getTwoYearPrices()
