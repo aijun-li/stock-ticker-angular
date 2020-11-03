@@ -66,5 +66,10 @@ export class WatchlistComponent implements OnInit {
     this.watchlist.splice(index, 1)
     window.localStorage.setItem('watchlist', JSON.stringify(this.watchlist))
     this.latest.splice(index, 1)
+
+    // Only fetch latest info when any stock remain in the portfolio
+    if (this.watchlist.length) {
+      this.getLatest()
+    }
   }
 }
