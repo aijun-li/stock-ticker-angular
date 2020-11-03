@@ -34,6 +34,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.info.ticker = this.route.snapshot.paramMap.get('ticker').toUpperCase()
+
+    // Fetch all necessary data
     zip(
       this.request.getMeta(this.info.ticker),
       this.request.getLatest(this.info.ticker)
@@ -43,22 +45,35 @@ export class DetailsComponent implements OnInit, OnDestroy {
       } else {
         this.info.meta = data1[0]
         this.processLatest(data1[1][0])
-        this.request
-          .getPrices(this.info.ticker, this.dataTime, '4min')
-          .subscribe((prices) => {
-            this.info.latestPrices = prices
-            this.isLoading = false
 
-            // Set auto updating
-            if (this.info.isOpen) {
-              this.updateCounter = window.setInterval(
-                () => this.getUpdate(),
-                15000
-              )
-            }
-          })
-        this.getNews()
-        this.getTwoYearPrices()
+        let today = new Date()
+        zip(
+          this.request.getPrices(this.info.ticker, this.dataTime, '4min'),
+          this.request.getNews(this.info.ticker),
+          this.request.getPrices(
+            this.info.ticker,
+            new Date(
+              today.getFullYear() - 2,
+              today.getMonth(),
+              today.getDate()
+            ),
+            '12hour'
+          )
+        ).subscribe((data2) => {
+          this.info.latestPrices = data2[0]
+          this.info.news = data2[1]
+          this.info.twoYearPrices = data2[2]
+
+          this.isLoading = false
+
+          // Set auto updating
+          if (this.info.isOpen) {
+            this.updateCounter = window.setInterval(
+              () => this.getUpdate(),
+              15000
+            )
+          }
+        })
       }
     })
 
@@ -93,25 +108,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
     window.localStorage.setItem('watchlist', JSON.stringify(watchlist))
     this.isStored = !this.isStored
-  }
-
-  getNews() {
-    this.request
-      .getNews(this.info.ticker)
-      .subscribe((news) => (this.info.news = news))
-  }
-
-  getTwoYearPrices() {
-    let today = new Date()
-    this.request
-      .getPrices(
-        this.info.ticker,
-        new Date(today.getFullYear() - 2, today.getMonth(), today.getDate()),
-        '12hour'
-      )
-      .subscribe((prices) => {
-        this.info.twoYearPrices = prices
-      })
   }
 
   getUpdate() {
