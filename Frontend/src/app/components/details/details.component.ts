@@ -135,13 +135,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.time = new Date()
     this.dataTime = new Date(latest.timestamp)
 
-    if (
-      Math.abs(this.time.getTime() - this.dataTime.getTime()) < 60000 ||
-      (latest.askPrice != null &&
-        latest.askSize != null &&
-        latest.bidPrice != null &&
-        latest.bidSize != null)
-    ) {
+    if (Math.abs(this.time.getTime() - this.dataTime.getTime()) < 60000) {
       this.info.isOpen = true
     } else {
       this.info.isOpen = false
