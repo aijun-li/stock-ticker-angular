@@ -85,7 +85,7 @@
       [class.color-up]="info.latest.change > 0"
       [class.color-down]="info.latest.change < 0"
     >
-      <div class="col-12 col-md pr-md-2 text-right">
+      <div class="col-12 col-lg pr-lg-2 text-right">
         <span *ngIf="info.latest.change > 0">
           <svg
             width="1em"
@@ -116,7 +116,7 @@
         </span>
         {{ info.latest.change }}
       </div>
-      <div class="col-12 col-md-auto pl-0 text-right">
+      <div class="col-12 col-lg-auto pl-0 text-right">
         {{ '(' + info.latest.changeP + '%)' }}
       </div>
     </div>

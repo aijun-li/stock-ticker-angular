@@ -1,13 +1,13 @@
-<div class="container pt-3 pt-md-0">
-  <div *ngFor="let pair of processedNews" class="row my-md-4">
-    <div *ngFor="let item of pair" class="col-12 col-md-6 m-md-0 my-3">
+<div class="container pt-3 pt-lg-0">
+  <div *ngFor="let pair of processedNews" class="row my-lg-4">
+    <div *ngFor="let item of pair" class="col-12 col-lg-6 m-lg-0 my-3">
       <div
         class="card p-3"
         style="background-color: #fafafa; cursor: pointer; height: 100%"
         (click)="open(item, content)"
       >
         <div class="row" style="height: 100%">
-          <div class="col-12 col-md-3 d-flex align-items-center pr-md-0">
+          <div class="col-12 col-md-3 d-flex align-items-center pr-lg-0">
             <div>
               <img [src]="item.img" class="card-img news-image" />
             </div>
