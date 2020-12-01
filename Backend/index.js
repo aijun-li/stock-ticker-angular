@@ -85,6 +85,10 @@ app.get("/api/news/:ticker", async (req, res) => {
   );
 });
 
+app.get("/ios/charts/:ticker", (req, res) => {
+  res.sendFile(path.join(__dirname, "chartsIOS.html"));
+});
+
 // Route for spa
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "static", "index.html"));
